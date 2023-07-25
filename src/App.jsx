@@ -5,6 +5,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   function handleSubmit(e) {
     e.preventDefault();
+    setItems("");
     setTodos((currentTodos) => {
       return [
         ...currentTodos,
@@ -26,6 +27,13 @@ function App() {
       });
     });
   }
+  function deleteTodo(id) {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => {
+        return todo.id !== id;
+      });
+    });
+  }
   return (
     <>
       <form onSubmit={handleSubmit} className="new-item-form">
@@ -42,6 +50,7 @@ function App() {
       </form>
       <h1 className="header">TODO LIST</h1>
       <ul className="list">
+        {todos.length == 0 && <li>There are no items in the list</li>}
         {todos.map((todo) => {
           return (
             <li key={todo.id}>
@@ -53,7 +62,12 @@ function App() {
                 />
                 {todo.title}
               </label>
-              <button className="btn btn-danger">Delete</button>
+              <button
+                className="btn btn-danger"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
+              </button>
             </li>
           );
         })}
